@@ -25,6 +25,7 @@
 
 
 (require 'ert-params)
+(require 'ert-params-case-fixtures)
 
 
 
