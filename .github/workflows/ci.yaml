@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Emacs
+        uses: purcell/setup-emacs@master
+        with:
+          version: 29.3
+
+      - name: Run tests
+        uses: leotaku/elisp-check@master
+        with:
+          check: ert
+          file: 'test/*.test.el'
+
+      - name: Run package-lint
+        uses: leotaku/elisp-check@master
+        with:
+          file: 'ert-parametrized.el'
+
+      - name: Run checkdoc
+        uses: leotaku/elisp-check@master
+        with:
+          check: checkdoc
+          file: 'ert-parametrized.el'
+
+
