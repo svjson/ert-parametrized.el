@@ -4,12 +4,13 @@
 > Parametrized test macros for ert
 
 `ert-params` is a small Emacs Lisp library that adds **parameterized tests** to ERT.  
-It provides a `ert-deftest-parametrized` macro similar in spirit to pytest’s parameterized tests and allows:
+It provides the macros `ert-deftest-parametrized` and `ert-deftest-matrix`, which are similar in spirit to pytest's parameterized tests and allows:
 
 - Named test cases
 - Literal and evaluated parameters (`:literal`, `:eval`)
 - Function-parameter injection (`:fun`)
 - Generator-based expansion (`:generator`)
+- Generate a test matrix from the cartesian product of multiple test case lists
 - Fully macro-expanded into real ERT tests
 
 This library is currently **experimental (v0.1.0)**
@@ -96,6 +97,47 @@ This generates `ert-deftest` forms for `generator-example--0-multiplied-by-2-equ
 and all the way up to `generator-example--10-multiplied-by-2-equals-20`
 
 `:generator` parameters can be combined with other parameters.
+
+### Matrix-based tests
+
+Tests can also be generated from the cartesian product of two(or more) lists of test cases, where the parameter values from the first test case list will be merged with the parameter values from the second test case list for.
+
+```elisp
+(ert-deftest-matrix test-matrix--produces-even-numbers
+    (test-number multiplier)
+    ((("num-1"
+       (:eval 1))
+      ("num-2"
+       (:eval 2))
+      ("num-3"
+       (:eval 3)))
+
+     (("multiplied-by-2"
+       (:eval 2))
+      ("multiplied-by-4"
+       (:eval 4))
+      ("multiplied-by-6"
+       (:eval 6))))
+
+  (should (cl-evenp (* test-number multiplier))))
+```
+
+This generates an ert-deftest form for each combination of `test-number` and `multiplier`, resulting in 9 tests in total.
+
+`:generator` parameters can also be used within matrix test cases:
+
+```elisp
+(ert-deftest-matrix test-matrix-with-generators--produces-even-numbers
+    (test-number multiplier)
+    ((("num-%s"
+       (:generator (:eval (number-sequence 1 5)))))
+
+     (("multiplied-by-%s"
+       (:generator (:eval (number-sequence 2 10 2))))))
+
+  (should (cl-evenp (* test-number multiplier))))
+
+```
 
 
 ## License
