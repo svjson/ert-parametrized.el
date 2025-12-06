@@ -7,7 +7,8 @@
 It provides the macros `ert-deftest-parametrized` and `ert-deftest-matrix`, which are similar in spirit to pytest's parameterized tests and allows:
 
 - Named test cases
-- Literal and evaluated parameters (`:literal`, `:eval`)
+- Immediately evaluated parameters (`:eval`)
+- Quoted (`:quote`) parameters for deferred evaluation
 - Function-parameter injection (`:fun`)
 - Generator-based expansion (`:generator`)
 - Generate a test matrix from the cartesian product of multiple test case lists
@@ -30,11 +31,11 @@ both literal and evaluated forms.
 
     ;; Named cases and inputs
     (("numbers"
-      (:literal 40)
-      (:literal 42))
+      (:eval 40)
+      (:eval 42))
      ("expr"
       (:eval (+ 18 22 40))
-      (:literal 82)))
+      (:eval 82)))
 
   ;; Test body
   (should (= (+ input 2) expected)))
@@ -87,7 +88,7 @@ performed with `format` and thus follows a syntax that should be familiar to eve
    
     (("%d-multiplied-by-2-equals-%d"
        (:generator (:eval (number-sequence 0 10)))
-       (:generator (:literal (0 2 4 6 8 10 12 14 16 18 20)))))
+       (:generator (:eval '(0 2 4 6 8 10 12 14 16 18 20)))))
       
   (should (equal (* input 2)
                  expected)))

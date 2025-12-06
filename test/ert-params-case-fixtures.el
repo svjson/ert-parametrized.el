@@ -25,33 +25,33 @@
 
 (defconst ert-params--case-A1--no-generators
   '("a-simple-case"
-    (:literal 10)
-    (:literal "ABCDE"))
+    (:eval 10)
+    (:eval "ABCDE"))
   "A simple test case with two literal inputs.")
 
 (defconst ert-params--case-A2--no-generators
   '("another-simple-case"
-    (:literal 8)
-    (:literal "ABCD"))
+    (:eval 8)
+    (:eval "ABCD"))
   "A sibling case to A1.")
 
 (defconst ert-params--case-B--one-digit-num-generator
   '("one-digit-numbers--%s"
-    (:generator (:literal (number-sequence 0 9))))
+    (:generator (:eval (number-sequence 0 9))))
   "A test-case containing only a generator literal.")
 
 (defconst ert-params--case-C--one-digit-num-generator--with-lit-siblings
   '("one-digit-numbers-and-literals--%s"
-    (:literal 1)
-    (:generator (:literal (number-sequence 0 9)))
+    (:eval 1)
+    (:generator (:eval (number-sequence 0 9)))
     (:eval 2))
   "A test-case containing a combination of a single generator and static literals.")
 
 (defconst ert-params--case-D--three-generators--with-lit-siblings
   '("multiple-generators--input:%s--sqr:%s--div2:%s"
-    (:generator (:literal (number-sequence 0 9)))
-    (:literal 1)
-    (:generator (:literal '(0 1 4 9 16 25 36 49 64 81)))
+    (:generator (:eval (number-sequence 0 9)))
+    (:eval 1)
+    (:generator (:eval '(0 1 4 9 16 25 36 49 64 81)))
     (:generator (:eval '(0 0.5 2 4.5 8 12.5 18 24.5 32 40.5))))
   "A test-case containing multiple generators and a single literal.")
 

@@ -41,7 +41,7 @@ and returns a list of the indices of any case parameters that uses the
 Example:
   \(ert-params--generator-indices
    `\(\(\"case-with-generators\"
-      \(:literal 42)
+      \(:quote 42)
       \(:generator (number-sequence 1 3))
       \(:generator (list \"A\" \"B\" \"C\"))))
   => \(1 2)
@@ -167,7 +167,7 @@ names of ARG bound to the parameters of each constructed test case."
                        (pcase item
                          (`(:fun ,form)
                           (push `(,sym-name () ,form) funcs))
-                         (`(:literal ,form)
+                         (`(:quote ,form)
                           (push `(,sym-name (quote ,form)) values))
                          (`(:eval ,form)
                           (push `(,sym-name ,form) values))
@@ -191,7 +191,7 @@ declarations:
 
   ((\"case-name\"
     (:fun     FORM)
-    (:literal FORM)
+    (:quote   FORM)
     (:eval    FORM)
     (:generator ...)
    (...))
@@ -201,7 +201,7 @@ names of ARG bound to the parameters of each constructed test case.
 
 The arguments will be bound according to:
   - all :fun parameters bound via cl-flet
-  - all :literal/:eval parameters bound via let.
+  - all :eval/:quote parameters bound via let.
   - all :generator parameters expand to one test case per generator value."
   (declare (indent 3))
   `(ert-params--expand-deftest-macro ,base-name
@@ -224,7 +224,7 @@ parameters:
 
   (((\"axis-name-%s\"
     (:fun     FORM)
-    (:literal FORM)
+    (:quote   FORM)
     (:eval    FORM)
     (:generator ...)))
 
@@ -236,7 +236,7 @@ names of ARG bound to the parameters of each constructed test case.
 
 The arguments will be bound according to:
   - all :fun parameters bound via cl-flet
-  - all :literal/:eval parameters bound via let.
+  - all :quote/:eval parameters bound via let.
   - all :generator parameters expand to one test case per generator value."
   (declare (indent 3))
   `(ert-params--expand-deftest-macro ,base-name

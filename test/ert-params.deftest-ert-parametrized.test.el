@@ -34,11 +34,11 @@
 (ert-deftest-parametrized deftest-params--case-A-literal
     (input expected)
     (("another-simple-case"
-      (:literal 8)
-      (:literal "ABCD"))
+      (:eval 8)
+      (:eval "ABCD"))
      ("another-simple-case"
-      (:literal 8)
-      (:literal "ABCD")))
+      (:eval 8)
+      (:eval "ABCD")))
   (should (equal (substring "ABCDEFGHIJKLMNOPQRSTUVWXYZ" 0 (/ input 2))
                  expected)))
 
@@ -68,14 +68,24 @@
 
     ;; Named cases and inputs
     (("numbers"
-      (:literal 40)
-      (:literal 42))
+      (:eval 40)
+      (:eval 42))
      ("expr"
       (:eval (+ 18 22 40))
-      (:literal 82)))
+      (:eval 82)))
 
   ;; Test body
   (should (= (+ input 2) expected)))
+
+(ert-deftest-parametrized generator-example
+    (input expected)
+
+    (("%d-multiplied-by-2-equals-%d"
+       (:generator (:eval (number-sequence 0 10)))
+       (:generator (:eval '(0 2 4 6 8 10 12 14 16 18 20)))))
+
+  (should (equal (* input 2)
+                 expected)))
 
 
 
