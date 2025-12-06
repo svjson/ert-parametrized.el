@@ -24,6 +24,10 @@
 
 ;;; Commentary:
 
+;; This file provides macros for defining parametrized ERT tests,
+;; including support for test case generators and cartesian product
+;; of test case axes.
+
 ;;; Code:
 
 (require 'cl-lib)
