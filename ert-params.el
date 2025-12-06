@@ -140,7 +140,13 @@ expressed test cases."
 ;; deftest macros
 
 (defmacro ert-params--expand-deftest-macro (base-name args cases body)
-  ""
+  "Utility macro for internal use that produces the final `ert-deftest` forms.
+
+BASE-NAME is the base deftest name.
+ARGS is the parameter list of each test.
+CASES is a list containing the fully expanded test case inputs.
+BODY is the test body to be defined for each resulting test, with the symbol
+names of ARG bound to the parameters of each constructed test case."
   (let ((prefix (if (symbolp base-name)
                     (symbol-name base-name)
                   base-name)))
