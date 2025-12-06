@@ -44,7 +44,7 @@
   '("one-digit-numbers-and-literals--%s"
     (:literal 1)
     (:generator (:literal (number-sequence 0 9)))
-    (:literal 2))
+    (:eval 2))
   "A test-case containing a combination of a single generator and static literals.")
 
 (defconst ert-params--case-D--three-generators--with-lit-siblings
@@ -52,7 +52,7 @@
     (:generator (:literal (number-sequence 0 9)))
     (:literal 1)
     (:generator (:literal '(0 1 4 9 16 25 36 49 64 81)))
-    (:generator (:literal '(0 0.5 2 4.5 8 12.5 18 24.5 32 40.5))))
+    (:generator (:eval '(0 0.5 2 4.5 8 12.5 18 24.5 32 40.5))))
   "A test-case containing multiple generators and a single literal.")
 
 

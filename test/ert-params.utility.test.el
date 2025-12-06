@@ -81,43 +81,43 @@
       (:literal (("one-digit-numbers-and-literals--0"
                    (:literal 1)
                    (:literal 0)
-                   (:literal 2))
+                   (:eval 2))
                  ("one-digit-numbers-and-literals--1"
                    (:literal 1)
                    (:literal 1)
-                   (:literal 2))
+                   (:eval 2))
                  ("one-digit-numbers-and-literals--2"
                    (:literal 1)
                    (:literal 2)
-                   (:literal 2))
+                   (:eval 2))
                  ("one-digit-numbers-and-literals--3"
                    (:literal 1)
                    (:literal 3)
-                   (:literal 2))
+                   (:eval 2))
                  ("one-digit-numbers-and-literals--4"
                    (:literal 1)
                    (:literal 4)
-                   (:literal 2))
+                   (:eval 2))
                  ("one-digit-numbers-and-literals--5"
                    (:literal 1)
                    (:literal 5)
-                   (:literal 2))
+                   (:eval 2))
                  ("one-digit-numbers-and-literals--6"
                    (:literal 1)
                    (:literal 6)
-                   (:literal 2))
+                   (:eval 2))
                  ("one-digit-numbers-and-literals--7"
                    (:literal 1)
                    (:literal 7)
-                   (:literal 2))
+                   (:eval 2))
                  ("one-digit-numbers-and-literals--8"
                    (:literal 1)
                    (:literal 8)
-                   (:literal 2))
+                   (:eval 2))
                  ("one-digit-numbers-and-literals--9"
                    (:literal 1)
                    (:literal 9)
-                   (:literal 2)))))
+                   (:eval 2)))))
 
      ("three-generators--and-literal"
       (:eval ert-params--case-D--three-generators--with-lit-siblings)
@@ -125,52 +125,52 @@
                   (:literal 0)
                   (:literal 1)
                   (:literal 0)
-                  (:literal 0))
+                  (:eval 0))
                  ("multiple-generators--input:1--sqr:1--div2:0.5"
                   (:literal 1)
                   (:literal 1)
                   (:literal 1)
-                  (:literal 0.5))
+                  (:eval 0.5))
                  ("multiple-generators--input:2--sqr:4--div2:2"
                   (:literal 2)
                   (:literal 1)
                   (:literal 4)
-                  (:literal 2))
+                  (:eval 2))
                  ("multiple-generators--input:3--sqr:9--div2:4.5"
                   (:literal 3)
                   (:literal 1)
                   (:literal 9)
-                  (:literal 4.5))
+                  (:eval 4.5))
                  ("multiple-generators--input:4--sqr:16--div2:8"
                   (:literal 4)
                   (:literal 1)
                   (:literal 16)
-                  (:literal 8))
+                  (:eval 8))
                  ("multiple-generators--input:5--sqr:25--div2:12.5"
                   (:literal 5)
                   (:literal 1)
                   (:literal 25)
-                  (:literal 12.5))
+                  (:eval 12.5))
                  ("multiple-generators--input:6--sqr:36--div2:18"
                   (:literal 6)
                   (:literal 1)
                   (:literal 36)
-                  (:literal 18))
+                  (:eval 18))
                  ("multiple-generators--input:7--sqr:49--div2:24.5"
                   (:literal 7)
                   (:literal 1)
                   (:literal 49)
-                  (:literal 24.5))
+                  (:eval 24.5))
                  ("multiple-generators--input:8--sqr:64--div2:32"
                   (:literal 8)
                   (:literal 1)
                   (:literal 64)
-                  (:literal 32))
+                  (:eval 32))
                  ("multiple-generators--input:9--sqr:81--div2:40.5"
                   (:literal 9)
                   (:literal 1)
                   (:literal 81)
-                  (:literal 40.5))))))
+                  (:eval 40.5))))))
 
   (should (equal (ert-params--expand-generators case)
                  expected-expansion)))

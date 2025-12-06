@@ -54,7 +54,12 @@
     (ert-params--case-D--three-generators--with-lit-siblings)
   (should (equal always-one 1))
   (should (equal (* input input)
-                 expected-sqr)))
+                 expected-sqr))
+  (should (equal (let ((result (/ (float (* input input)) 2)))
+                   (if (= result (truncate result))
+                       (truncate result)
+                     result))
+                 expected-sqr-div2)))
 
 (ert-deftest-parametrized example-test
 
@@ -71,7 +76,6 @@
 
   ;; Test body
   (should (= (+ input 2) expected)))
-
 
 
 
