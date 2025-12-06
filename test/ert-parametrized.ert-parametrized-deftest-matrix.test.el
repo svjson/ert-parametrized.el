@@ -24,6 +24,9 @@
 
 
 
+(load-file (expand-file-name "ert-parametrized-test-paths.el"
+                             (file-name-directory (or load-file-name buffer-file-name))))
+
 (require 'cl-lib)
 (require 'ert-parametrized)
 (require 'ert-parametrized-case-fixtures)
