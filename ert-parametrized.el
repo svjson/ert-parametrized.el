@@ -1,11 +1,17 @@
-;;; ert-params.el --- summary -*- lexical-binding: t -*-
+;;; ert-parametrized.el --- Parameterized test macros for ERT -*- lexical-binding: t -*-
 
 ;; Author: Sven Johansson (johansson.sven@gmail.com)
 ;; Maintainer: Sven Johansson (johansson.sven@gmail.com)
 ;; Version: 0.1.0
-;; Package-Requires: ((emacs "30.1"))
 ;; Homepage: https://www.github.com/svjson/scoot
-;; Keywords: test, ert, convenience, extension
+;; Keywords: test ert convenience extension
+
+;; Package: ert-parametrized
+;; Package-Version: 0.1.0
+;; Package-Requires: ((emacs "26.1"))
+;; Package-Lint-Expected-Versions: ((emacs "26.1"))
+
+;; SPDX-License-Identifier: GPL-3.0-or-later
 
 ;; This file is not part of GNU Emacs
 
@@ -36,7 +42,7 @@
 
 ;; Utility functions
 
-(defun ert-params--generator-indices (case-params)
+(defun ert-parametrized--generator-indices (case-params)
   "Locate parameters declared as :generator in CASE-PARAMS.
 
 This function is intended for internal use during test macro expansion
@@ -44,7 +50,7 @@ and returns a list of the indices of any case parameters that uses the
 :generator keyword.
 
 Example:
-  \(ert-params--generator-indices
+  \(ert-parametrized--generator-indices
    `\(\(\"case-with-generators\"
       \(:quote 42)
       \(:generator (number-sequence 1 3))
@@ -61,7 +67,7 @@ If no generators are present this function returns nil/empty list."
                (push index gen-indices)))
     (nreverse  gen-indices)))
 
-(defun ert-params--expand-generators (case)
+(defun ert-parametrized--expand-generators (case)
   "Expand all :generator forms in CASE.
 
 This function is intended for interal use during test macro expansion
@@ -74,7 +80,7 @@ If the form does contain :generator parameters the return value is
 a list of cases containg a case for each value of generators, where
 the generator expressions themselves have been substituted with one
 of its values."
-  (if-let* ((gen-indices (nreverse (ert-params--generator-indices (cdr case))))
+  (if-let* ((gen-indices (nreverse (ert-parametrized--generator-indices (cdr case))))
             (gen-values-alist
              (mapcar
               (lambda (idx)
@@ -99,7 +105,7 @@ of its values."
                          vals))))
     (list case)))
 
-(defun ert-params--expand-cases (cases)
+(defun ert-parametrized--expand-cases (cases)
   "Expand all test cases in CASES with :generator params.
 
 Takes a list of test case forms and performs expansion of generators
@@ -116,17 +122,17 @@ expressed test cases."
                                                      :generator
                                                      (lambda (a b)
                                                        (eq (car a) b)))))
-                         (ert-params--expand-generators lcase)
+                         (ert-parametrized--expand-generators lcase)
                        (list lcase))))
                  cases)))
 
 
-(defun ert-params--expand-matrix (case-lists)
+(defun ert-parametrized--expand-matrix (case-lists)
   "Expand lists of cases in CASE-LISTS and create cartesian product."
   (if (null case-lists)
       nil
-    (let ((first-cases (ert-params--expand-cases (car case-lists)))
-          (rest-cases (ert-params--expand-matrix (cdr case-lists)))
+    (let ((first-cases (ert-parametrized--expand-cases (car case-lists)))
+          (rest-cases (ert-parametrized--expand-matrix (cdr case-lists)))
           result)
       (dolist (fc first-cases)
         (if rest-cases
@@ -144,7 +150,7 @@ expressed test cases."
 
 ;; deftest macros
 
-(defmacro ert-params--expand-deftest-macro (base-name args cases body)
+(defmacro ert-parametrized--expand-deftest-macro (base-name args cases body)
   "Utility macro for internal use that produces the final `ert-deftest` forms.
 
 BASE-NAME is the base deftest name.
@@ -183,7 +189,7 @@ names of ARG bound to the parameters of each constructed test case."
                      ,@body)))))
           cases))))
 
-(defmacro ert-deftest-parametrized (base-name args case-list &rest body)
+(defmacro ert-parametrized-deftest (base-name args case-list &rest body)
   "Define a group of parametrized ERT tests.
 
 BASE-NAME is a symbol or string used as the prefix.
@@ -209,13 +215,13 @@ The arguments will be bound according to:
   - all :eval/:quote parameters bound via let.
   - all :generator parameters expand to one test case per generator value."
   (declare (indent 3))
-  `(ert-params--expand-deftest-macro ,base-name
+  `(ert-parametrized--expand-deftest-macro ,base-name
                                      ,args
-                                     ,(ert-params--expand-cases case-list)
+                                     ,(ert-parametrized--expand-cases case-list)
                                      ,body))
 
 
-(defmacro ert-deftest-matrix (base-name args case-lists &rest body)
+(defmacro ert-parametrized-deftest-matrix (base-name args case-lists &rest body)
   "Define parametrized ERT tests from the cartesian product of two case lists.
 
 BASE-NAME is a symbol or string used as the prefix.
@@ -244,13 +250,13 @@ The arguments will be bound according to:
   - all :quote/:eval parameters bound via let.
   - all :generator parameters expand to one test case per generator value."
   (declare (indent 3))
-  `(ert-params--expand-deftest-macro ,base-name
+  `(ert-parametrized--expand-deftest-macro ,base-name
                                      ,args
-                                     ,(ert-params--expand-matrix case-lists)
+                                     ,(ert-parametrized--expand-matrix case-lists)
                                      ,body))
 
 
 
-(provide 'ert-params)
+(provide 'ert-parametrized)
 
-;;; ert-params.el ends here
+;;; ert-parametrized.el ends here

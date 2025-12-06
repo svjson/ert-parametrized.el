@@ -1,4 +1,4 @@
-;;; ert-params.ert-deftest-parametrized.test.el --- parametrized test usage -*- lexical-binding: t -*-
+;;; ert-parametrized.ert-parametrized-deftest.test.el --- parametrized test usage -*- lexical-binding: t -*-
 
 ;; This file is not part of GNU Emacs
 
@@ -18,20 +18,20 @@
 ;;; Commentary:
 
 ;; This file contains tests that verify the features provided by the
-;; `ert-deftest-parametrized` macro of ert-params.el
+;; `ert-parametrized-deftest` macro of ert-parametrized.el
 
 ;;; Code:
 
 
 
-(require 'ert-params)
-(require 'ert-params-case-fixtures)
+(require 'ert-parametrized)
+(require 'ert-parametrized-case-fixtures)
 
 
 
 ;; deftests for example cases
 
-(ert-deftest-parametrized deftest-params--case-A-literal
+(ert-parametrized-deftest deftest-params--case-A-literal
     (input expected)
     (("another-simple-case"
       (:eval 8)
@@ -42,16 +42,16 @@
   (should (equal (substring "ABCDEFGHIJKLMNOPQRSTUVWXYZ" 0 (/ input 2))
                  expected)))
 
-(ert-deftest-parametrized deftest-params--case-A-refs
+(ert-parametrized-deftest deftest-params--case-A-refs
     (input expected)
-    (ert-params--case-A1--no-generators
-     ert-params--case-A2--no-generators)
+    (ert-parametrized--case-A1--no-generators
+     ert-parametrized--case-A2--no-generators)
   (should (equal (substring "ABCDEFGHIJKLMNOPQRSTUVWXYZ" 0 (/ input 2))
                  expected)))
 
-(ert-deftest-parametrized deftest-params--three-generators
+(ert-parametrized-deftest deftest-params--three-generators
     (input always-one expected-sqr expected-sqr-div2)
-    (ert-params--case-D--three-generators--with-lit-siblings)
+    (ert-parametrized--case-D--three-generators--with-lit-siblings)
   (should (equal always-one 1))
   (should (equal (* input input)
                  expected-sqr))
@@ -61,7 +61,7 @@
                      result))
                  expected-sqr-div2)))
 
-(ert-deftest-parametrized example-test
+(ert-parametrized-deftest example-test
 
     ;; Input variables bound for each case
     (input expected)
@@ -77,7 +77,7 @@
   ;; Test body
   (should (= (+ input 2) expected)))
 
-(ert-deftest-parametrized generator-example
+(ert-parametrized-deftest generator-example
     (input expected)
 
     (("%d-multiplied-by-2-equals-%d"
@@ -91,7 +91,7 @@
 
 ;;; Code as parameters using :fun
 
-(ert-deftest-parametrized deftest-param--function-parameters
+(ert-parametrized-deftest deftest-param--function-parameters
     (do-the-thing expected)
     (("returns-10"
       (:fun (* 2 (+ 1 4)))
@@ -103,4 +103,4 @@
 
 
 
-;;; ert-params.ert-deftest-parametrized.test.el ends here
+;;; ert-parametrized.ert-parametrized-deftest.test.el ends here

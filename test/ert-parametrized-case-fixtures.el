@@ -1,4 +1,4 @@
-;;; ert-params-case-fixtures.el --- common test input -*- lexical-binding: t -*-
+;;; ert-parametrized-case-fixtures.el --- common test input -*- lexical-binding: t -*-
 
 ;; This file is not part of GNU Emacs
 
@@ -17,37 +17,37 @@
 
 ;;; Commentary:
 
-;; This file contains common test case inputs for ert-params tests.
+;; This file contains common test case inputs for ert-parametrized tests.
 
 ;;; Code:
 
 
 
-(defconst ert-params--case-A1--no-generators
+(defconst ert-parametrized--case-A1--no-generators
   '("a-simple-case"
     (:eval 10)
     (:eval "ABCDE"))
   "A simple test case with two literal inputs.")
 
-(defconst ert-params--case-A2--no-generators
+(defconst ert-parametrized--case-A2--no-generators
   '("another-simple-case"
     (:eval 8)
     (:eval "ABCD"))
   "A sibling case to A1.")
 
-(defconst ert-params--case-B--one-digit-num-generator
+(defconst ert-parametrized--case-B--one-digit-num-generator
   '("one-digit-numbers--%s"
     (:generator (:eval (number-sequence 0 9))))
   "A test-case containing only a generator literal.")
 
-(defconst ert-params--case-C--one-digit-num-generator--with-lit-siblings
+(defconst ert-parametrized--case-C--one-digit-num-generator--with-lit-siblings
   '("one-digit-numbers-and-literals--%s"
     (:eval 1)
     (:generator (:eval (number-sequence 0 9)))
     (:eval 2))
   "A test-case containing a combination of a single generator and static literals.")
 
-(defconst ert-params--case-D--three-generators--with-lit-siblings
+(defconst ert-parametrized--case-D--three-generators--with-lit-siblings
   '("multiple-generators--input:%s--sqr:%s--div2:%s"
     (:generator (:eval (number-sequence 0 9)))
     (:eval 1)
@@ -56,6 +56,6 @@
   "A test-case containing multiple generators and a single literal.")
 
 
-(provide 'ert-params-case-fixtures)
+(provide 'ert-parametrized-case-fixtures)
 
-;;; ert-params-case-fixtures.el ends here
+;;; ert-parametrized-case-fixtures.el ends here

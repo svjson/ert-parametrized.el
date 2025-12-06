@@ -1,4 +1,4 @@
-;;; ert-params.ert-deftest-matrix.test.el --- parametrized test usage -*- lexical-binding: t -*-
+;;; ert-parametrized.ert-parametrized-deftest-matrix.test.el --- parametrized test usage -*- lexical-binding: t -*-
 
 ;; This file is not part of GNU Emacs
 
@@ -18,20 +18,20 @@
 ;;; Commentary:
 
 ;; This file contains tests that verify the features provided by the
-;; `ert-deftest-parametrized` macro of ert-params.el
+;; `ert-deftest-parametrized` macro of ert-parametrized.el
 
 ;;; Code:
 
 
 
 (require 'cl-lib)
-(require 'ert-params)
-(require 'ert-params-case-fixtures)
+(require 'ert-parametrized)
+(require 'ert-parametrized-case-fixtures)
 
 
 
 
-(ert-deftest-matrix test-matrix--produces-even-numbers
+(ert-parametrized-deftest-matrix test-matrix--produces-even-numbers
     (test-number multiplier)
     ((("num-1"
        (:eval 1))
@@ -50,7 +50,7 @@
   (should (cl-evenp (* test-number multiplier))))
 
 
-(ert-deftest-matrix test-matrix-with-generators--produces-even-numbers
+(ert-parametrized-deftest-matrix test-matrix-with-generators--produces-even-numbers
     (test-number multiplier)
     ((("num-%s"
        (:generator (:eval (number-sequence 1 5)))))
@@ -62,4 +62,4 @@
 
 
 
-;;; ert-params.ert-deftest-matrix.test.el ends here
+;;; ert-parametrized.ert-parametrized-deftest-matrix.test.el ends here

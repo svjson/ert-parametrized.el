@@ -1,10 +1,10 @@
 
-# ert-params.el
+# ert-parametrized.el
 
 > Parametrized test macros for ert
 
-`ert-params` is a small Emacs Lisp library that adds **parameterized tests** to ERT.  
-It provides the macros `ert-deftest-parametrized` and `ert-deftest-matrix`, which are similar in spirit to pytest's parameterized tests and allows:
+`ert-parametrized` is a small Emacs Lisp library that adds **parameterized tests** to ERT.  
+It provides the macros `ert-parametrized-deftest` and `ert-parametrized-deftest-matrix`, which are similar in spirit to pytest's parameterized tests and allows:
 
 - Named test cases
 - Immediately evaluated parameters (`:eval`)
@@ -24,7 +24,7 @@ Test cases are described as simple tables, or lists of test case forms and suppo
 both literal and evaluated forms.
 
 ```elisp
-(ert-deftest-parametrized example-test
+(ert-parametrized-deftest example-test
 
     ;; Input variables bound for each case
     (input expected)
@@ -52,7 +52,7 @@ and this can be achieved by binding forms with `:fun` which generates an fbound 
 that evaluates these forms.
 
 ```elisp
-(ert-deftest-parametrized fun-example-test
+(ert-parametrized-deftest fun-example-test
     (move-into-position! expected)
   
     (("from-buffer-start"
@@ -83,7 +83,7 @@ the original test case form to provide placeholders in their name. String interp
 performed with `format` and thus follows a syntax that should be familiar to everyone.
 
 ```elisp
-(ert-deftest-parametrized generator-example
+(ert-parametrized-deftest generator-example
     (input expected)
    
     (("%d-multiplied-by-2-equals-%d"
@@ -104,7 +104,7 @@ and all the way up to `generator-example--10-multiplied-by-2-equals-20`
 Tests can also be generated from the cartesian product of two(or more) lists of test cases, where the parameter values from the first test case list will be merged with the parameter values from the second test case list for.
 
 ```elisp
-(ert-deftest-matrix test-matrix--produces-even-numbers
+(ert-parametrized-deftest-matrix test-matrix--produces-even-numbers
     (test-number multiplier)
     ((("num-1"
        (:eval 1))
@@ -128,7 +128,7 @@ This generates an ert-deftest form for each combination of `test-number` and `mu
 `:generator` parameters can also be used within matrix test cases:
 
 ```elisp
-(ert-deftest-matrix test-matrix-with-generators--produces-even-numbers
+(ert-parametrized-deftest-matrix test-matrix-with-generators--produces-even-numbers
     (test-number multiplier)
     ((("num-%s"
        (:generator (:eval (number-sequence 1 5)))))

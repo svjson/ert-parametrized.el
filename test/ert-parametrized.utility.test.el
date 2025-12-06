@@ -1,4 +1,4 @@
-;;; ert-params.utility.test.el --- summary -*- lexical-binding: t -*-
+;;; ert-parametrized.utility.test.el --- summary -*- lexical-binding: t -*-
 
 ;; This file is not part of GNU Emacs
 
@@ -17,54 +17,55 @@
 
 ;;; Commentary:
 
-;; commentary
+;; This file contains tests for the internal utility functions used
+;; during macro expansion.
 
 ;;; Code:
 
 
 
-(require 'ert-params)
-(require 'ert-params-case-fixtures)
+(require 'ert-parametrized)
+(require 'ert-parametrized-case-fixtures)
 
 
 
-;; ert-params--generator-indices
+;; ert-parametrized--generator-indices
 
-(ert-deftest-parametrized ert-params--generator-indices
+(ert-parametrized-deftest ert-parametrized--generator-indices
     (case expected-indices)
 
     (("no-generators"
-      (:eval (cdr ert-params--case-A1--no-generators))
+      (:eval (cdr ert-parametrized--case-A1--no-generators))
       (:eval nil))
 
      ("one-digit-numbers"
-      (:eval (cdr ert-params--case-B--one-digit-num-generator))
+      (:eval (cdr ert-parametrized--case-B--one-digit-num-generator))
       (:quote (0)))
 
      ("one-digit-numbers--with-literal-siblings"
-      (:eval (cdr ert-params--case-C--one-digit-num-generator--with-lit-siblings))
+      (:eval (cdr ert-parametrized--case-C--one-digit-num-generator--with-lit-siblings))
       (:quote (1)))
 
      ("three-generators--and-literal"
-      (:eval (cdr ert-params--case-D--three-generators--with-lit-siblings))
+      (:eval (cdr ert-parametrized--case-D--three-generators--with-lit-siblings))
       (:quote (0 2 3))))
 
-  (should (equal (ert-params--generator-indices case)
+  (should (equal (ert-parametrized--generator-indices case)
                  expected-indices)))
 
 
 
-;; ert-params--expand-generators
+;; ert-parametrized--expand-generators
 
-(ert-deftest-parametrized ert-params--expand-generators
+(ert-parametrized-deftest ert-parametrized--expand-generators
     (case expected-expansion)
 
     (("no-generators"
-      (:eval ert-params--case-A1--no-generators)
-      (:eval (list ert-params--case-A1--no-generators)))
+      (:eval ert-parametrized--case-A1--no-generators)
+      (:eval (list ert-parametrized--case-A1--no-generators)))
 
      ("one-digit-numbers"
-      (:eval ert-params--case-B--one-digit-num-generator)
+      (:eval ert-parametrized--case-B--one-digit-num-generator)
       (:quote (("one-digit-numbers--0" (:eval 0))
                ("one-digit-numbers--1" (:eval 1))
                ("one-digit-numbers--2" (:eval 2))
@@ -77,7 +78,7 @@
                ("one-digit-numbers--9" (:eval 9)))))
 
      ("one-digit-numbers--with-literal-siblings"
-      (:eval ert-params--case-C--one-digit-num-generator--with-lit-siblings)
+      (:eval ert-parametrized--case-C--one-digit-num-generator--with-lit-siblings)
       (:quote (("one-digit-numbers-and-literals--0"
                 (:eval 1)
                 (:eval 0)
@@ -120,7 +121,7 @@
                 (:eval 2)))))
 
      ("three-generators--and-literal"
-      (:eval ert-params--case-D--three-generators--with-lit-siblings)
+      (:eval ert-parametrized--case-D--three-generators--with-lit-siblings)
       (:quote (("multiple-generators--input:0--sqr:0--div2:0"
                 (:eval 0)
                 (:eval 1)
@@ -172,15 +173,15 @@
                 (:eval 81)
                 (:eval 40.5))))))
 
-  (should (equal (ert-params--expand-generators case)
+  (should (equal (ert-parametrized--expand-generators case)
                  expected-expansion)))
 
 
 
 ;; expand-matrix
 
-(ert-deftest ert-params--expand-matrix--without-generators ()
-  (should (equal (ert-params--expand-matrix
+(ert-deftest ert-parametrized--expand-matrix--without-generators ()
+  (should (equal (ert-parametrized--expand-matrix
                   '((("one"
                       (:eval 1))
                      ("two"
@@ -214,4 +215,4 @@
 
 
 
-;;; ert-params.utility.test.el ends here
+;;; ert-parametrized.utility.test.el ends here
