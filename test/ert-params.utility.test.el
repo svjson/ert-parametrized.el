@@ -177,5 +177,41 @@
 
 
 
+;; expand-matrix
+
+(ert-deftest ert-params--expand-matrix--without-generators ()
+  (should (equal (ert-params--expand-matrix
+                  '((("one"
+                      (:literal 1))
+                     ("two"
+                      (:literal 2))
+                     ("three"
+                      (:literal 3)))
+
+                    (("aye"
+                      (:literal "A"))
+                     ("bee"
+                      (:literal "B")))))
+
+                 '(("one--aye"
+                    (:literal 1)
+                    (:literal "A"))
+                   ("one--bee"
+                    (:literal 1)
+                    (:literal "B"))
+                   ("two--aye"
+                    (:literal 2)
+                    (:literal "A"))
+                   ("two--bee"
+                    (:literal 2)
+                    (:literal "B"))
+                   ("three--aye"
+                    (:literal 3)
+                    (:literal "A"))
+                   ("three--bee"
+                    (:literal 3)
+                    (:literal "B"))))))
+
+
 
 ;;; ert-params.utility.test.el ends here

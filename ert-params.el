@@ -116,33 +116,34 @@ expressed test cases."
                  cases)))
 
 
+(defun ert-params--expand-matrix (case-lists)
+  "Expand lists of cases in CASE-LISTS and create cartesian product."
+  (if (null case-lists)
+      nil
+    (let ((first-cases (ert-params--expand-cases (car case-lists)))
+          (rest-cases (ert-params--expand-matrix (cdr case-lists)))
+          result)
+      (dolist (fc first-cases)
+        (if rest-cases
+            (dolist (rc rest-cases)
+              (push (append (list (format "%s--%s"
+                                          (car fc)
+                                          (car rc)))
+                            (cdr fc)
+                            (cdr rc))
+                    result))
+          (push fc result)))
+      (nreverse result))))
+
+
 
 ;; deftest macros
 
-(defmacro ert-deftest-parametrized (base-name args params &rest body)
-  "Define a group of parametrized ERT tests.
-
-BASE-NAME is a symbol or string used as the prefix.
-PARAMS is a list of rows:
-
-  ((\"case-name\"
-    (:fun     FORM)
-    (:literal FORM)
-    (:eval    FORM)
-   (...))
-
-ARGS is a list of symbols, one per parameter position in each row.
-The first parameter in a row binds to the first symbol in ARGS, etc.
-
-BODY is the test body, evaluated with:
-  - all :fun parameters bound via cl-flet
-  - all :literal/:eval parameters bound via let.
-  - all :generator parameters expand to one test case per generator value."
-  (declare (indent 3))
-  (let* ((prefix (if (symbolp base-name)
-                     (symbol-name base-name)
-                   base-name))
-         (cases (ert-params--expand-cases params)))
+(defmacro ert-params--expand-deftest-macro (base-name args cases body)
+  ""
+  (let ((prefix (if (symbolp base-name)
+                    (symbol-name base-name)
+                  base-name)))
     `(progn
        ,@(mapcar
           (lambda (row)
@@ -171,6 +172,71 @@ BODY is the test body, evaluated with:
                      ,@body)))))
           cases))))
 
+(defmacro ert-deftest-parametrized (base-name args case-list &rest body)
+  "Define a group of parametrized ERT tests.
+
+BASE-NAME is a symbol or string used as the prefix.
+
+ARGS is a list of symbols, one per parameter position in each row.
+The first parameter in a row binds to the first symbol in ARGS, etc.
+
+CASE-LIST is a list of test cases containing a case name and parameter
+declarations:
+
+  ((\"case-name\"
+    (:fun     FORM)
+    (:literal FORM)
+    (:eval    FORM)
+    (:generator ...)
+   (...))
+
+BODY is the test body to be defined for each resulting test, with the symbol
+names of ARG bound to the parameters of each constructed test case.
+
+The arguments will be bound according to:
+  - all :fun parameters bound via cl-flet
+  - all :literal/:eval parameters bound via let.
+  - all :generator parameters expand to one test case per generator value."
+  (declare (indent 3))
+  `(ert-params--expand-deftest-macro ,base-name
+                                     ,args
+                                     ,(ert-params--expand-cases case-list)
+                                     ,body))
+
+
+(defmacro ert-deftest-matrix (base-name args case-lists &rest body)
+  "Define parametrized ERT tests from the cartesian product of two case lists.
+
+BASE-NAME is a symbol or string used as the prefix.
+
+ARGS is a list of symbols, one per parameter position in the test cases
+constructed from the combination of the parameters expressed in CASE-LISTS.
+The first parameter in a row binds to the first symbol in ARGS, etc.
+
+CASE-LISTS is a list containing lists of test cases containing a case name and
+parameters:
+
+  (((\"axis-name-%s\"
+    (:fun     FORM)
+    (:literal FORM)
+    (:eval    FORM)
+    (:generator ...)))
+
+   ((\"second-axis\"
+     (:eval    FORM))))
+
+BODY is the test body to be defined for each resulting test, with the symbol
+names of ARG bound to the parameters of each constructed test case.
+
+The arguments will be bound according to:
+  - all :fun parameters bound via cl-flet
+  - all :literal/:eval parameters bound via let.
+  - all :generator parameters expand to one test case per generator value."
+  (declare (indent 3))
+  `(ert-params--expand-deftest-macro ,base-name
+                                     ,args
+                                     ,(ert-params--expand-matrix case-lists)
+                                     ,body))
 
 
 
