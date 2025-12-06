@@ -36,9 +36,9 @@
 
 (ert-parametrized-deftest deftest-params--case-A-literal
     (input expected)
-    (("another-simple-case"
-      (:eval 8)
-      (:eval "ABCD"))
+    (("a-simple-case"
+      (:eval 10)
+      (:eval "ABCDE"))
      ("another-simple-case"
       (:eval 8)
       (:eval "ABCD")))
