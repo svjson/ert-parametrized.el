@@ -21,7 +21,7 @@ jobs:
         uses: leotaku/elisp-check@master
         with:
           check: ert
-          file: 'test/*.test.el'
+          file: '.test/*.test.el'
 
       - name: Run package-lint
         uses: leotaku/elisp-check@master
