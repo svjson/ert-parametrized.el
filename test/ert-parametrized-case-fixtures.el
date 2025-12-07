@@ -1,4 +1,5 @@
 ;;; ert-parametrized-case-fixtures.el --- common test input -*- lexical-binding: t -*-
+;; -*- no-byte-compile: t -*-
 
 ;; This file is not part of GNU Emacs
 

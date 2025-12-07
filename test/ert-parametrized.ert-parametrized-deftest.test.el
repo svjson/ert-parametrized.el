@@ -1,4 +1,5 @@
 ;;; ert-parametrized.ert-parametrized-deftest.test.el --- parametrized test usage -*- lexical-binding: t -*-
+;; -*- no-byte-compile: t -*-
 
 ;; This file is not part of GNU Emacs
 

@@ -1,4 +1,5 @@
 ;;; ert-parametrized.utility.test.el --- summary -*- lexical-binding: t -*-
+;; -*- no-byte-compile: t -*-
 
 ;; This file is not part of GNU Emacs
 

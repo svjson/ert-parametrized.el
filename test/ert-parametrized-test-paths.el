@@ -1,4 +1,5 @@
 ;;; ert-parametrized-test-paths.el --- CI entry point -*- lexical-binding: t -*-
+;; -*- no-byte-compile: t -*-
 
 ;; This file is not part of GNU Emacs
 
