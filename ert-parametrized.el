@@ -176,7 +176,7 @@ names of ARG bound to the parameters of each constructed test case."
        ,@(mapcar
           (lambda (row)
             (let* ((case-name (car row))
-                   (test-name (intern (format "%s--%s" prefix case-name)))
+                   (test-name (intern (format "%s--%s" prefix (ert-parametrized--sanitize-name-fragment case-name))))
                    (items (cdr row))
                    (funcs nil)
                    (values nil))
