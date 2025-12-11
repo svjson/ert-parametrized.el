@@ -2,12 +2,12 @@
 
 ;; Author: Sven Johansson (johansson.sven@gmail.com)
 ;; Maintainer: Sven Johansson (johansson.sven@gmail.com)
-;; Version: 0.1.0
+;; Version: 0.1.1
 ;; Homepage: https://www.github.com/svjson/scoot
 ;; Keywords: test ert convenience extension
 
 ;; Package: ert-parametrized
-;; Package-Version: 0.1.0
+;; Package-Version: 0.1.1
 ;; Package-Requires: ((emacs "26.1"))
 ;; Package-Lint-Expected-Versions: ((emacs "26.1"))
 
@@ -41,6 +41,18 @@
 
 
 ;; Utility functions
+
+(defun ert-parametrized--sanitize-name-fragment (value)
+  "Sanitize VALUE to make it suitable as a symbol.
+
+This is used to make sure that test parameters used to construct
+unique test names are valid symbols."
+  (let ((s (format "%S" value)))
+    (setq s (replace-regexp-in-string "[()\"]" "" s))
+    (setq s (replace-regexp-in-string (regexp-quote " . ") "/" s))
+    (setq s (replace-regexp-in-string "[\n\s]" "-" s))
+    (setq s (replace-regexp-in-string "[^a-zA-Z0-9-_\/\[\]!:]" "-" s))
+    s))
 
 (defun ert-parametrized--generator-indices (case-params)
   "Locate parameters declared as :generator in CASE-PARAMS.
@@ -101,8 +113,9 @@ of its values."
                                                    (push val sel)
                                                    val))
                                          item))))
-                   (append (list (apply #'format (car case) (nreverse sel)))
-                         vals))))
+                   (append (list (ert-parametrized--sanitize-name-fragment
+                                  (apply #'format (car case) (nreverse sel))))
+                           vals))))
     (list case)))
 
 (defun ert-parametrized--expand-cases (cases)
@@ -114,9 +127,7 @@ expressed test cases."
   (apply #'append
          (mapcar (lambda (case-spec)
                    (let ((lcase (if (symbolp case-spec)
-                                    (progn
-                                      (message "%S" case-spec)
-                                      (eval case-spec))
+                                    (eval case-spec)
                                   case-spec)))
                      (if-let ((gen-pos (seq-position (cdr lcase)
                                                      :generator

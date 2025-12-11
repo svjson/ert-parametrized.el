@@ -106,5 +106,24 @@
   (should (equal (do-the-thing) expected)))
 
 
+;;; Non-symbol generator values
+
+(ert-parametrized-deftest test-with-plists
+    (plist expected-key expected-value)
+    (("--from-%s--should-take-%s--and-get-%s"
+      (:generator (:quote '((list :row 10
+                                  :column 8)
+                            (list :row 5
+                                  :column 2)
+                            (list :rows 5
+                                  :row-lengths '(10 8 12 9 20)))))
+      (:generator (:quote '(:row :column :row-lengths)))
+      (:generator (:eval '(10 2 (10 8 12 9 20))))))
+  (should (equal (plist-get plist expected-key)
+                 expected-value)))
+
+
+
+
 
 ;;; ert-parametrized.ert-parametrized-deftest.test.el ends here

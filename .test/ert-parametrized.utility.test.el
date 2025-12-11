@@ -31,6 +31,32 @@
 (require 'ert-parametrized)
 (require 'ert-parametrized-case-fixtures)
 
+
+;; ert-parametrized--sanitize-name-fragment
+
+(ert-parametrized-deftest ert-parametrized--sanitize-name-fragment
+    (value expected)
+    (("parens"
+      (:quote (1210))
+      (:eval "1210"))
+     ("parens-in-string"
+      (:eval "(1210)")
+      (:eval "1210"))
+     ("spaces-and-newlines"
+      (:eval "There\nare\nmultiple lines here")
+      (:eval "There-are-multiple-lines-here"))
+     ("plist-with-numbers"
+      (:quote (:name "Klasse" :age "54"))
+      (:eval ":name-Klasse-:age-54"))
+     ("cons-cell-with-numbers"
+      (:quote (12 . 1))
+      (:eval "12/1"))
+     ("symbol-with-special-characters"
+      (:quote put%this:in/your{pipe}!)
+      (:eval "put%this:in/your{pipe}!")))
+  (should (equal (ert-parametrized--sanitize-name-fragment value)
+                 expected)))
+
 
 
 ;; ert-parametrized--generator-indices
@@ -175,7 +201,17 @@
                 (:eval 9)
                 (:eval 1)
                 (:eval 81)
-                (:eval 40.5))))))
+                (:eval 40.5)))))
+     ("non-primitives"
+      (:quote ("non-primitives--%s--and--%s"
+               (:generator (:quote '((4 . 2) (:key "value"))))
+               (:generator (:eval '("(4 5 6)" [7 8 9])))))
+      (:quote (("non-primitives--4/2--and--4-5-6"
+                (:quote (4 . 2))
+                (:eval "(4 5 6)"))
+               ("non-primitives--:key-value--and--[7-8-9]"
+                (:quote (:key "value"))
+                (:eval [7 8 9]))))))
 
   (should (equal (ert-parametrized--expand-generators case)
                  expected-expansion)))

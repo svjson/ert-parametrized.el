@@ -14,7 +14,7 @@ It provides the macros `ert-parametrized-deftest` and `ert-parametrized-deftest-
 - Generate a test matrix from the cartesian product of multiple test case lists
 - Fully macro-expanded into real ERT tests
 
-This library is currently **experimental (v0.1.0)**
+This library is currently **experimental (v0.1.x)**
 
 ## Features
 
